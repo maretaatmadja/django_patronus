@@ -1,0 +1,37 @@
+{% extends 'reference/base.html' %}
+{% load reference_tags %}
+
+{% block title %}
+    My Reference
+{% endblock title %}
+
+{% block content %}
+    <h1>My Reference</h1>
+        
+    {% for refpost in refposts %}
+        <h2>
+            <a href="#">
+                {{ refpost.title }}
+            </a>
+        </h2>
+
+        <p class="date">
+            Created {{ refpost.created }} by  {{ refpost.author }}
+        </p>
+        
+        {{ refpost.description|markdown|truncatewords_html:30 }}
+        
+        <p>
+            <a href="{{ refpost.link }}">{{ refpost.link }}</a>
+        </p>
+
+        {% if refpost.author == request.user %} <!--hanya bisa update delete post milik user yg login-->
+        <p>
+            <a href="{% url 'reference:reference_update' refpost.id %}">Update Reference</a> |
+            <a href="{% url 'reference:reference_delete' refpost.id %}">Delete Reference</a>
+        </p>
+        {% endif %}
+    {% endfor %}
+
+    {% include "pagination.html" with page=page_obj %}
+{% endblock content %}
