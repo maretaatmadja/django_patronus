@@ -27,8 +27,8 @@
 
         {% if refpost.author == request.user %} <!--hanya bisa update delete post milik user yg login-->
         <p>
-            <a href="{% url 'reference:reference_update' refpost.id %}">Update Reference</a> |
-            <a href="{% url 'reference:reference_delete' refpost.id %}">Delete Reference</a>
+            <a href="{% url 'reference:reference_update' refpost.id refpost.slug %}">Update Reference</a> |
+            <a href="{% url 'reference:reference_delete' refpost.id refpost.slug %}">Delete Reference</a>
         </p>
         {% endif %}
     {% endfor %}

@@ -30,6 +30,7 @@ class ReferenceCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        form.instance.slug = slugify(form.instance.title, allow_unicode=True)
 
         return super().form_valid(form)
 
@@ -37,18 +38,23 @@ class ReferenceUpdateView(LoginRequiredMixin, UpdateView):
     model = Reference
     fields = ['title', 'description', 'link']
     template_name = 'reference/post/reference_form.html'
-    query_pk = True
+    query_pk_and_slug = True
 
     def get_queryset(self):
         qs = super().get_queryset()
         
         return qs.filter(author = self.request.user)
     
+    def form_valid(self, form):
+        form.instance.slug = slugify(form.instance.title, allow_unicode=True)
+
+        return super().form_valid(form)
+    
 class ReferenceDeleteView(LoginRequiredMixin, DeleteView):
     model = Reference
     template_name = 'reference/post/reference_confirm_delete.html'
     success_url = reverse_lazy('reference:reference_list')
-    query_pk = True
+    query_pk_and_slug = True
 
     def get_queryset(self):
         qs = super().get_queryset()

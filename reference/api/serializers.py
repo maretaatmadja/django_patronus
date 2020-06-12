@@ -6,4 +6,4 @@ class ReferenceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reference
-        fields = ['id', 'title', 'description', 'link', 'author']
+        fields = ['id', 'title', 'slug', 'description', 'link', 'author']

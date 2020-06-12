@@ -11,9 +11,13 @@ class ReferenceListView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         if serializer.is_valid():
-            serializer.save(author = self.request.user)
+            serializer.save(author = self.request.user, slug=slugify(serializer.validated_data['title'], allow_unicode=True))
 
 class ReferenceDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reference.objects.all()
     serializer_class = ReferenceSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadonly]
+
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            serializer.save(slug=slugify(serializer.validated_data['title'], allow_unicode=True))
